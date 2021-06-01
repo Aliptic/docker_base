@@ -1,0 +1,54 @@
+version: "2"
+services:
+  webserver:
+    build: ./apache
+    container_name: ${PROJECT_NAME}_web
+    volumes:
+      - ./app/:/var/www/html
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:latest
+    container_name: ${PROJECT_NAME}_database
+    environment:
+      # General db --initialize-insecure
+      MYSQL_DATABASE: aliptic
+      MYSQL_ROOT_PASSWORD: root
+      
+      # aliptic db
+      MYSQL_USER: aliptic
+      MYSQL_PASSWORD: aliptic
+      # MYSQL_TCP_PORT: 3306
+      # MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    volumes:
+      - ./database:${DB_PATH}
+    ports:
+        - "3306:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: ${PROJECT_NAME}_phpMyAdmin
+    environment:
+      PMA_HOST: db
+      #PMA_USER: root
+      #PMA_PASSWORD: root
+      PMA_USER: aliptic
+      PMA_PASSWORD: aliptic
+    ports:
+      - 8081:80
+    depends_on:
+      - webserver
+
+  adminer:
+    image: adminer:latest
+    container_name: ${PROJECT_NAME}_adminer
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+      ADMINER_PLUGINS: tables-filter tinymce
+    ports:
+      - '8082:8080'
+    depends_on:
+      - webserver

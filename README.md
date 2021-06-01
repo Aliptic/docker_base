@@ -1,0 +1,1 @@
+# Docker base used for our project, install Symfony automatically
