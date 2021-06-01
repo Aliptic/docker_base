@@ -1,7 +1,7 @@
 # Download the apache server
 FROM php:7.4-apache
 
-WORKDIR /var/www/html/
+WORKDIR /var/www/html/symfony
 
 # Apt update and installation
 RUN apt-get update && \

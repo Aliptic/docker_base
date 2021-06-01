@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install Symfony if the folder folder not exists
-if [[ ! -d "/var/www/html/symfony" ]]; then
+if [[ ! -d "/var/www/html/symfony/bin" ]]; then
   echo "Symfony installation"
   composer create-project symfony/website-skeleton:"^4.4" symfony
   composer require form validator apache-pack profiler-pack
