@@ -10,6 +10,6 @@ else
 fi
 
 php -v
-# composer --version
+composer --version
 
 exec "$@"
