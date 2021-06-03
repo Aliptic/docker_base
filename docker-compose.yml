@@ -52,3 +52,10 @@ services:
       - '8082:8080'
     depends_on:
       - webserver
+
+  maildev:
+    image: maildev/maildev
+    container_name: ${PROJECT_NAME}_maildev
+    command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
+    ports:
+      - "8083:80"
