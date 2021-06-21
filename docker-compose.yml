@@ -1,12 +1,15 @@
-version: "2"
+version: "3.8"
 services:
   webserver:
     build: ./apache
     container_name: ${PROJECT_NAME}_web
     volumes:
-      - ./app/:/var/www/html
+      - ./app/:/var/www/html:cached
+      - var:/app/symfony/var
+      - vendor:/app/symfony/vendor
     ports:
       - "8080:80"
+      - "3000:3000"
     depends_on:
       - db
 
@@ -52,10 +55,26 @@ services:
       - '8082:8080'
     depends_on:
       - webserver
-
+      
   maildev:
     image: maildev/maildev
     container_name: ${PROJECT_NAME}_maildev
     command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
     ports:
       - "8083:80"
+      
+  mercure:
+    image: dunglas/mercure
+    container_name: ${PROJECT_NAME}_mercure
+    ports:
+      - "8090:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+  
+volumes:
+  var:
+  vendor:
+  caddy_data:
+  caddy_config:
